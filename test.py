@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 x = np.linspace(-5,5,10000)
-x = x[x**3 + 7 >= 0]
+x = x[x**3 + 7 >= 0] # makes sure y is a real number...
 y = np.sqrt(x**3 + 7)
 
 fig, ax = plt.subplots()
