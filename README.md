@@ -5,3 +5,4 @@ This project is very unfinished! Hopefully that changes!
 ## Gallery
 ![a very adorable plot of secp256k1](test.png)
 ## License
+This project is licensed under the Gnu General Public License 3.0 (GPL) - see ``License``.
