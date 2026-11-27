@@ -4,12 +4,12 @@ This code performs elliptic curve point addition over a finite field of the form
 Maybe it's worth experimenting more with other finite fields. But cryptographically, this is good enough.
 
 notes:
-    - This code could contain multiplication, and use a double-and-add implementation, possibly Pollard-Rho
-      as well. I will add this in the future, either in this code, or a separate module.
+    - This code could contain multiplication, and use a double-and-add implementation. I will add this in 
+      the future, either in this code, or a separate module.
     - Right now it requires b as an argument despite it not being used in the algorithm. This is just to
       keep it consistent. I might change my mind about this later.
-    - The loop condition is kind of funny but it works so long as you want to add every point in the list.
-      Again, this is likely to be changed.
+    - The loop condition should be okay, as I changed it from depending on P2 (which can cause some issues)
+      to depending on the pointer value.
     - I may choose to keep this as a binary operation and create a separate haskell fold-like function for
       adding many points in succession.
 
@@ -18,7 +18,7 @@ notes:
 def add(points, a, b, p):
     from algorithms import inverse
     P1, P2, pointer = points[0], None, 0
-    while P2 != points[-1]:
+    while pointer < len(points)-1:
         P2 = points[pointer+1]
         pointer += 1
 
