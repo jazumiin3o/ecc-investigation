@@ -30,6 +30,7 @@ def inverse(n, p):
 
 # now our curve
 def generate_curve(a,b,p):
+    import math
     # lets define our finite field. i use integers mod p. we will call this F_p for clarity.
     F_p = {i for i in range(0,p)} # this only goes up to p-1
     p_quadratic_residues = {i**2 for i in range(0,p)} # list of quadratic residues modulo p
@@ -55,18 +56,25 @@ def add(points, a, b, p): # if only i had access to haskell fold... might make t
         # pretty much useless but makes the groupish properties more clear
         if P1 == 'inf':
             P1 = P2
-        elif P2 == 'inf':
-            P1 = P1 # does nothing lol just moves to the next iteation, maybe continue is better
+            continue
+        if P2 == 'inf':
+            P1 = P1 # does nothing lol
+            continue
     
         # point addition formulae. these will be better written in the docs, this code is horrendous
-        elif (P1[0] == P2[0]) and P1 != P2: # same x coordinate => the line through P1P2 is vertical
-            P1 = 'inf'
-        elif P1 != P2: # regular case, distinct points yay
-            w = (P1[1]-P2[1])*inverse(P1[0]-P2[0], p)
-        elif P1 == P2 and P1[1] == 0: # this is at the end of the loopy bit
-            P1 = 'inf'
-        elif P1[1] != 0: # same point
-            w = (3*(P1[0])**2 + a)*inverse(2 * P1[1],p) # slope obtained by taking derivative
+        if P1 != P2:
+            if P1[0] == P2[0]: # same x coordinate => the line through P1P2 is vertical
+                P1 = 'inf'
+                continue
+            else:
+                w = (P1[1]-P2[1])*inverse(P1[0]-P2[0], p) # distinct points general case
+
+        elif P1 == P2: 
+            if P1[1] == 0: # this is at the end of the loopy bit
+                P1 = 'inf'
+                continue
+            else: # same point general case
+                w = (3*(P1[0])**2 + a)*inverse(2 * P1[1],p) # slope obtained by taking derivative
     
         x = w**2 - P1[0] - P2[0]
         y = w*(P1[0]- x) - P1[1]
