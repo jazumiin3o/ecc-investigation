@@ -41,6 +41,7 @@ def generate_curve(a,b,p):
                 y = int(math.sqrt(square)) % p
                 E.append([x,y%p])
                 E.append([x,(-y)%p])
+                break # stops duplicate points
 
     return E
 
@@ -54,11 +55,11 @@ def add(points, a, b, p): # if only i had access to haskell fold... might make t
         # pretty much useless but makes the groupish properties more clear
         if P1 == 'inf':
             P1 = P2
-        if P2 == 'inf':
+        elif P2 == 'inf':
             P1 = P1 # does nothing lol just moves to the next iteation, maybe continue is better
     
         # point addition formulae. these will be better written in the docs, this code is horrendous
-        if (P1[0] == P2[0]) and P1 != P2: # same x coordinate => the line through P1P2 is vertical
+        elif (P1[0] == P2[0]) and P1 != P2: # same x coordinate => the line through P1P2 is vertical
             P1 = 'inf'
         elif P1 != P2: # regular case, distinct points yay
             w = (P1[1]-P2[1])*inverse(P1[0]-P2[0], p)
